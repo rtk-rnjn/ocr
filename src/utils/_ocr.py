@@ -42,10 +42,7 @@ class OCRImage:
             return OCRImage(Image.open(io.BytesIO(await resp.read())).convert("L").filter(ImageFilter.SHARPEN))
 
     async def get_text(self):
-        if t := cache.get(self.dhash):
-            return t
-
-        return await self.__run_ocr()
+        return t if (t := cache.get(self.dhash)) else await self.__run_ocr()
 
     @to_async()
     def __run_ocr(self):
